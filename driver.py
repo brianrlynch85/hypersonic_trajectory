@@ -30,7 +30,6 @@ def main():
 
    sigmaTable = np.loadtxt(bank_angle_filename).transpose()
 
-
    thetaE = np.deg2rad(174.0)
    phiE = np.deg2rad(23.7)
 
@@ -41,7 +40,7 @@ def main():
    print(r_ecr)
    print(v_ecr)
 
-   Nsteps = 1000
+   Nsteps = 2000
    r_ecr, v_ecr, time = slv.solvesystem(r_ecr, v_ecr, sigmaTable, timeMeas[0], timeMeas[-1], Nsteps)
 
    aeroCoeffWB = const.CW_VEHICLE[:,np.newaxis]
@@ -82,7 +81,6 @@ def main():
    ax3.set_ylabel(r"Magnitude of Acceleration (g)")
 
    #
-   '''
    f, (ax1, ax2, ax3) = plt.subplots(nrows=1, ncols=3, figsize = (18,6))
    f.suptitle('Apollo 10 (Notional)')
 
@@ -111,6 +109,7 @@ def main():
    ax3.set_ylabel("Aerodynamic Acceleration in ECR Frame (g)")
    ax3.legend(loc='upper right')
 
+   '''
    #
    f, (ax1, ax2, ax3) = plt.subplots(nrows=1, ncols=3, figsize = (18,6))
    f.suptitle('Apollo 10 (Notional)')

@@ -13,7 +13,7 @@ import numpy as np
 from scipy.interpolate import interp1d
 
 # 
-def vb2wbMatrix(t_, tsigmaTable_, kind_='slinear'):
+def vb2wbMatrix(t_, tsigmaTable_, kind_='linear'):
    """Construct matrix to convert from the WB to the VB coordinates.
 
     Keyword arguments:
