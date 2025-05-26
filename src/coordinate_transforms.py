@@ -18,20 +18,30 @@ from src.coordinates import ecr2lla as e2l
 from src.coordinates import lla2ecr as l2e
 
 # 
-def vb2wb(t_, tsigmaTable_, invec_vb_):
+def velocity2wind(t_, tsigmaTable_, invec_vb_):
    return v2w.vb2wb(t_, tsigmaTable_, invec_vb_)
 
 # 
-def wb2vb(t_, tsigmaTable_, invec_wb_):
+def wind2velocity(t_, tsigmaTable_, invec_wb_):
    return w2v.wb2vb(t_, tsigmaTable_, invec_wb_)
 
+# 
+def wind2ecr(t_, tsigmaTable_, r_ecr_, v_ecr_, invec_wb_):
+   temp, bank = w2v.wb2vb(t_, tsigmaTable_, invec_wb_)
+   return v2e.vb2ecr(r_ecr_, v_ecr_, temp), bank
+
 #
-def vb2ecr(r_ecr_, v_ecr_, invec_vb):
+def velocity2ecr(r_ecr_, v_ecr_, invec_vb):
    return v2e.vb2ecr(r_ecr_, v_ecr_, invec_vb)
 
 #
-def ecr2vb(r_ecr_, v_ecr_, invec_ecr_):
+def ecr2velocity(r_ecr_, v_ecr_, invec_ecr_):
    return e2v.ecr2vb(r_ecr_, v_ecr_, invec_ecr_)
+
+#
+def ecr2wind(t_, tsigmaTable_, r_ecr_, v_ecr_, invec_ecr_):
+   temp = e2v.ecr2vb(r_ecr_, v_ecr_, invec_ecr_)
+   return v2w.vb2wb(t_, tsigmaTable_, temp)
 
 # 
 def lla2ecr(lla_, bool_is_geodetic_=False):
