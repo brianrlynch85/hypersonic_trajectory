@@ -26,6 +26,14 @@ def wind2velocity(t_, tsigmaTable_, invec_wb_):
    return w2v.wb2vb(t_, tsigmaTable_, invec_wb_)
 
 # 
+def deriv1bank_velocity2wind(t_, tsigmaTable_, invec_vb_):
+   return v2w.deriv1bank_vb2wb(t_, tsigmaTable_, invec_vb_)
+
+# 
+def deriv1bank_wind2velocity(t_, tsigmaTable_, invec_wb_):
+   return w2v.deriv1bank_wb2vb(t_, tsigmaTable_, invec_wb_)
+
+# 
 def wind2ecr(t_, tsigmaTable_, r_ecr_, v_ecr_, invec_wb_):
    temp, bank = w2v.wb2vb(t_, tsigmaTable_, invec_wb_)
    return v2e.vb2ecr(r_ecr_, v_ecr_, temp), bank

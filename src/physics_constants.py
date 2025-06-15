@@ -31,12 +31,12 @@ GRAV_CONST = 6.674e-11 # Gravitational constant [m^3 kg^-1 s^-2]
 GRAV_SURF = 9.81 # Gravitational acceleration at Earth's surface [m s^-2]
 
 
-M_VEHICLE = 5.5e3  # Mass of vehicle [kg]
-S_VEHICLE = 12.0 # Cross sectional area of vehicle [m^2]
+M_VEHICLE = 6.0e3  # Mass of vehicle [kg]
+S_VEHICLE = 13.0 # Cross sectional area of vehicle [m^2]
 
-CD_VEHICLE = 1.26 # Drag coefficient []
+CD_VEHICLE = 1.2 # Drag coefficient []
 CS_VEHICLE = 0.0 # Side slip coefficient []
-CL_VEHICLE = 0.41 # Lift coefficient []
+CL_VEHICLE = 0.5 # Lift coefficient []
 CW_VEHICLE = np.array([CS_VEHICLE, CD_VEHICLE, CL_VEHICLE]) # Aerdynamic coefficient vector []
 
 rho0 = 1.225 # Standard atmosphere reference density [kg m^-3]

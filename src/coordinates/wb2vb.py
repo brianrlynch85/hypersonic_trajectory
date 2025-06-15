@@ -55,3 +55,7 @@ def wb2vb(t_, tsigmaTable_, invec_wb_):
 
    # 3 x N vector in velocity basis
    return invec_vb, sigma
+
+# 
+def deriv1bank_wb2vb(t_, tsigmaTable_, invec_wb_):
+   return 1

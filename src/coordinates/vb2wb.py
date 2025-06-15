@@ -55,3 +55,7 @@ def vb2wb(t_, tsigmaTable_, invec_vb_):
 
    # 3 x N vector in wind basis
    return invec_wb, sigma
+
+# 
+def deriv1bank_vb2wb(t_, tsigmaTable_, invec_vb_):
+   return 1

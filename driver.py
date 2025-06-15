@@ -10,38 +10,42 @@ Description: This script contains a driver to produce a hypersonic trajectory
 
 # Import statements
 import numpy as np
+from scipy import interpolate
 from matplotlib import pyplot as plt
 
 import src.coordinate_transforms as coord
 import src.physics_constants as const
 import src.integrate_rk4 as slv
 import src.forces as frc
+import src.utils as utl
+import src.fit_trajectory as ftj
 
 #
 def main():
+   
    altitude_filename = 'data/altitude_vs_time_data.txt'
-   bank_angle_filename = 'data/bankAngle_vs_time_data.txt'
 
    altitudeTable = np.loadtxt(altitude_filename).transpose()
    timeMeas = altitudeTable[0,:]
    timeMeas = timeMeas - timeMeas[0]
    altitude = altitudeTable[1,:] * const.KFT_TO_KM
-   error = 5.0 * const.KFT_TO_KM # Half the smallest divison from old archived blurry graph
-
-   sigmaTable = np.loadtxt(bank_angle_filename).transpose()
+   altitudeTable[0,:] = timeMeas
+   altitudeTable[1,:] = altitude
+   altitudeError = 5.0 * const.KFT_TO_KM * np.ones(altitude.shape) # Half the smallest divison from old archived blurry graph
 
    thetaE = np.deg2rad(174.0)
-   phiE = np.deg2rad(23.7)
+   phiE = np.deg2rad(25.0)
 
-   #r_ecr = np.array([11976.0, -15451.0, -8506.0]) * const.KFT_TO_M #
    r_ecr = (altitude[0] * const.KM_TO_M + const.R_EARTH) * np.array([np.cos(phiE)*np.cos(thetaE), np.cos(phiE)*np.sin(thetaE), -np.sin(phiE)])
-   v_ecr = np.array([-1.23e3, -10.4e3,  3.64e3 ])
-   #v_ecr = np.array([27.5   , 20.5    , 11.9]) * const.KFT_TO_M #
+   v_ecr = np.array([-1.0e3, -10.0e3,  3.0e3 ])
+
    print(r_ecr)
    print(v_ecr)
 
-   Nsteps = 2000
-   r_ecr, v_ecr, time = slv.solvesystem(r_ecr, v_ecr, sigmaTable, timeMeas[0], timeMeas[-1], Nsteps)
+   to = 0.0
+   tf = 500.0
+   Nsteps = 100
+   r_ecr, v_ecr, time, sigmaTable = ftj.fit_trajectory(r_ecr, v_ecr, to, tf, Nsteps, altitudeTable, altitudeError)
 
    aeroCoeffWB = const.CW_VEHICLE[:,np.newaxis]
    aeroCoeffVB, bank = coord.wind2velocity(time, sigmaTable, aeroCoeffWB)
@@ -63,7 +67,7 @@ def main():
    f.suptitle('Apollo 10 (Notional)')
 
    ax1.plot(time, coord.ecr2lla(r_ecr)[2] / 1000.0)
-   ax1.errorbar(timeMeas, altitude, yerr = error, fmt='.', mfc='none', linewidth=1, capsize=4)
+   ax1.errorbar(timeMeas, altitude, yerr = altitudeError, fmt='.', mfc='none', linewidth=1, capsize=4)
    ax1.grid()
    ax1.set_xlabel("Time (s)")
    ax1.set_ylabel("Geocentric Altitude (km)")
@@ -109,7 +113,6 @@ def main():
    ax3.set_ylabel("Aerodynamic Acceleration in ECR Frame (g)")
    ax3.legend(loc='upper right')
 
-   '''
    #
    f, (ax1, ax2, ax3) = plt.subplots(nrows=1, ncols=3, figsize = (18,6))
    f.suptitle('Apollo 10 (Notional)')
@@ -140,7 +143,7 @@ def main():
    ax3.set_xlabel("Time (s)")
    ax3.set_ylabel("Drag Coefficients in Wind Frame ()")
    ax3.legend(loc='upper right')
-   '''
+
    #
    plt.show()
 

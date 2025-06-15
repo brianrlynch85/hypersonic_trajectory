@@ -15,6 +15,8 @@ import numpy as np
 from . import physics_constants as const
 import src.coordinate_transforms as coord
 
+import pyatmos as atmo
+
 #
 def mass_density(r_ecr_):
    r"""Compute the atmospheric mass density
@@ -52,6 +54,8 @@ def mass_density(r_ecr_):
 
    #rn = coord.ecr2lla(r_ecr_)[-1,:]
    rn = np.linalg.vector_norm(r_ecr_, axis=0) - const.R_EARTH
+
+   #print(rn / 1000.0, atmo.coesa76(rn/1000.0).rho, const.rho0 * np.exp(-rn / const.H0))
    return const.rho0 * np.exp(-rn / const.H0)
 
 # 
